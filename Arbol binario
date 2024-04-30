@@ -1,0 +1,127 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// DEFINICIÓN DE LA ESTRUCTURA DE UN NODO DE ÁRBOL
+typedef struct Nodo {
+    int clave;
+    struct Nodo *izquierda;
+    struct Nodo *derecha;
+} Nodo;
+
+// FUNCIÓN PARA CREAR UN NUEVO NODO
+Nodo *nuevoNodo(int clave) {
+    Nodo *nodo = (Nodo *)malloc(sizeof(Nodo));
+    nodo->clave = clave;
+    nodo->izquierda = nodo->derecha = NULL;
+    return nodo;
+}
+
+// FUNCIÓN PARA INSERTAR UN NODO EN EL ÁRBOL
+Nodo *insertar(Nodo *raiz, int clave) {
+    if (raiz == NULL) {
+        return nuevoNodo(clave);
+    }
+    if (clave < raiz->clave) {
+        raiz->izquierda = insertar(raiz->izquierda, clave);
+    } else if (clave > raiz->clave) {
+        raiz->derecha = insertar(raiz->derecha, clave);
+    }
+    return raiz;
+}
+
+// FUNCIÓN PARA ENCONTRAR EL NODO CON LA CLAVE MÍNIMA
+Nodo *nodoClaveMinima(Nodo *nodo) {
+    Nodo *actual = nodo;
+    while (actual && actual->izquierda != NULL) {
+        actual = actual->izquierda;
+    }
+    return actual;
+}
+
+// FUNCIÓN PARA ENCONTRAR EL NODO CON LA CLAVE MÁXIMA
+Nodo *nodoClaveMaxima(Nodo *nodo) {
+    Nodo *actual = nodo;
+    while (actual && actual->derecha != NULL) {
+        actual = actual->derecha;
+    }
+    return actual;
+}
+
+// FUNCIÓN PARA ELIMINAR UN NODO DEL ÁRBOL
+Nodo *eliminarNodo(Nodo *raiz, int clave) {
+    if (raiz == NULL) return raiz;
+    if (clave < raiz->clave) {
+        raiz->izquierda = eliminarNodo(raiz->izquierda, clave);
+    } else if (clave > raiz->clave) {
+        raiz->derecha = eliminarNodo(raiz->derecha, clave);
+    } else {
+        if (raiz->izquierda == NULL) {
+            Nodo *temp = raiz->derecha;
+            free(raiz);
+            return temp;
+        } else if (raiz->derecha == NULL) {
+            Nodo *temp = raiz->izquierda;
+            free(raiz);
+            return temp;
+        }
+        Nodo *temp = nodoClaveMinima(raiz->derecha);
+        raiz->clave = temp->clave;
+        raiz->derecha = eliminarNodo(raiz->derecha, temp->clave);
+    }
+    return raiz;
+}
+
+// FUNCIÓN PARA RECORRIDO INORDEN
+void inorden(Nodo *raiz) {
+    if (raiz != NULL) {
+        inorden(raiz->izquierda);
+        printf("%d ", raiz->clave);
+        inorden(raiz->derecha);
+    }
+}
+
+// FUNCIÓN PARA CALCULAR LA ALTURA DEL ÁRBOL
+int alturaArbol(Nodo *raiz) {
+    if (raiz == NULL) {
+        return 0; // Altura de un árbol vacío es 0
+    } else {
+        // Calcula la altura de los subárboles izquierdo y derecho
+        int alturaIzquierda = alturaArbol(raiz->izquierda);
+        int alturaDerecha = alturaArbol(raiz->derecha);
+
+        // La altura del árbol es la máxima altura entre los subárboles izquierdo y derecho
+        return 1 + (alturaIzquierda > alturaDerecha ? alturaIzquierda : alturaDerecha);
+    }
+}
+
+int main(void) {
+    Nodo *raiz = NULL;
+    int claves[] = {80, 70, 20, 60, 30, 50, 2, 100};
+    for (int i = 0; i < sizeof(claves)/sizeof(claves[0]); i++) {
+        raiz = insertar(raiz, claves[i]);
+    }
+
+    printf("Recorrido inorden antes de eliminaciones: ");
+    inorden(raiz);
+    printf("\n");
+
+    raiz = eliminarNodo(raiz, 100);
+    raiz = eliminarNodo(raiz, 2);
+
+    Nodo *minNodo = nodoClaveMinima(raiz);
+    Nodo *maxNodo = nodoClaveMaxima(raiz);
+    if (minNodo != NULL) {
+        printf("El número menor del árbol es: %d\n", minNodo->clave);
+    }
+    if (maxNodo != NULL) {
+        printf("El número mayor del árbol es: %d\n", maxNodo->clave);
+    }
+
+    printf("Recorrido inorden después de eliminaciones: ");
+    inorden(raiz);
+    printf("\n");
+
+    printf("La altura del árbol es: %d\n", alturaArbol(raiz));
+
+    return 0;
+}
