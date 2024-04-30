@@ -1,0 +1,75 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// DEFINICIÓN DE LA ESTRUCTURA DE UN NODO DE ÁRBOL
+typedef struct Nodo {
+    int clave;
+    struct Nodo *izquierda;
+    struct Nodo *derecha;
+} Nodo;
+
+// FUNCIÓN PARA CREAR UN NUEVO NODO
+Nodo *nuevoNodo(int clave) {
+    Nodo *nodo = (Nodo *)malloc(sizeof(Nodo));
+    nodo->clave = clave;
+    nodo->izquierda = nodo->derecha = NULL;
+    return nodo;
+}
+
+// FUNCIÓN PARA INSERTAR UN NODO EN EL ÁRBOL
+Nodo *insertar(Nodo *raiz, int clave) {
+    if (raiz == NULL) {
+        return nuevoNodo(clave);
+    }
+    if (clave < raiz->clave) {
+        raiz->izquierda = insertar(raiz->izquierda, clave);
+    } else if (clave > raiz->clave) {
+        raiz->derecha = insertar(raiz->derecha, clave);
+    }
+    return raiz;
+}
+
+// FUNCIÓN PARA INVERTIR UN ÁRBOL DE BÚSQUEDA BINARIA
+Nodo *invertirArbol(Nodo *raiz) {
+    if (raiz == NULL) {
+        return NULL;
+    }
+    // Intercambiar los hijos izquierdo y derecho
+    Nodo *temp = raiz->izquierda;
+    raiz->izquierda = raiz->derecha;
+    raiz->derecha = temp;
+    // Invertir los subárboles izquierdo y derecho
+    invertirArbol(raiz->izquierda);
+    invertirArbol(raiz->derecha);
+    return raiz;
+}
+
+// FUNCIÓN PARA RECORRIDO INORDEN
+void inorden(Nodo *raiz) {
+    if (raiz != NULL) {
+        inorden(raiz->izquierda);
+        printf("%d ", raiz->clave);
+        inorden(raiz->derecha);
+    }
+}
+
+int main(void) {
+    Nodo *raiz = NULL;
+    int claves[] = {80, 70, 20, 60, 30, 50, 2, 100};
+    for (int i = 0; i < sizeof(claves) / sizeof(claves[0]); i++) {
+        raiz = insertar(raiz, claves[i]);
+    }
+
+    printf("Recorrido ordenado del árbol: ");
+    inorden(raiz);
+    printf("\n");
+
+    // Invertir el árbol
+    raiz = invertirArbol(raiz);
+
+    printf("Recorrido invertido del árbol: ");
+    inorden(raiz);
+    printf("\n");
+
+    return 0;
+}
