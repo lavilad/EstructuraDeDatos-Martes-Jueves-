@@ -24,4 +24,5 @@ Node* searchFather(Node* root, int key){
   if(key > root->key){
     return searchFather(root->right, key);
   }
+  return NULL;
 }
