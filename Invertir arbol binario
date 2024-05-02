@@ -1,14 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// DEFINITION OF A TREE NODE STRUCTURE
+
 typedef struct Node {
     int key;
     struct Node *left;
     struct Node *right;
 } Node;
 
-// FUNCTION TO CREATE A NEW NODE
+
 Node *newNode(int key) {
     Node *node = (Node *)malloc(sizeof(Node));
     node->key = key;
@@ -16,7 +16,7 @@ Node *newNode(int key) {
     return node;
 }
 
-// FUNCTION TO INSERT A NODE INTO THE TREE
+
 Node *insert(Node *root, int key) {
     if (root == NULL) {
         return newNode(key);
@@ -29,22 +29,22 @@ Node *insert(Node *root, int key) {
     return root;
 }
 
-// FUNCTION TO INVERT A BINARY SEARCH TREE
+
 Node *invertTree(Node *root) {
     if (root == NULL) {
         return NULL;
     }
-    // Swap left and right children
+   
     Node *temp = root->left;
     root->left = root->right;
     root->right = temp;
-    // Recursively invert left and right subtrees
+   
     invertTree(root->left);
     invertTree(root->right);
     return root;
 }
 
-// FUNCTION FOR INORDER TRAVERSAL
+
 void inorder(Node *root) {
     if (root != NULL) {
         inorder(root->left);
@@ -64,7 +64,7 @@ int main(void) {
     inorder(root);
     printf("\n");
 
-    // Invert the tree
+   
     root = invertTree(root);
 
     printf("Inverted inorder traversal of the tree: ");
