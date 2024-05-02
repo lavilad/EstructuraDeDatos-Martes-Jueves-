@@ -1,0 +1,15 @@
+//funcion espejo 
+void mirrorTree(Node* node) {
+    if (node == NULL) {
+        return;  // si el nodo es nulo no hace nada
+    }
+
+    // mueve de izquierda a derecha el hijo
+    Node* temp = node->left;
+    node->left = node->right;
+    node->right = temp;
+
+    // recursividad llama a los dos hijos
+    mirrorTree(node->left);
+    mirrorTree(node->right);
+}
