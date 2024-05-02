@@ -1,0 +1,46 @@
+//karen mancilla jimenez
+#include <stdio.h>
+#include <stdlib.h>
+//estructura del arbol
+struct TreeNode {
+
+
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+};
+
+
+
+
+// freamos un nuevo nodo
+struct TreeNode* newNode(int num) {
+
+    struct TreeNode* node = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    node->val = num;
+    node->left = NULL;
+    node->right = NULL;
+    return node;
+}
+
+//funcion para calcular la diferencia entre la suma de los nodos de los arboles
+int diferenciaSuba(struct TreeNode* root) {
+    if (root == NULL) {
+        return 0;
+    }
+    int suma_izquierda = 0, suma_derecha = 0;
+    if (root->left != NULL) {
+        suma_izquierda = diferenciaSuba(root->left);
+    }
+
+
+    
+    if (root->right != NULL) {
+        suma_derecha = diferenciaSuba(root->right);
+    }
+    return root->val + suma_derecha - suma_izquierda;
+}
+
+int main() {
+    
+    return 0;
