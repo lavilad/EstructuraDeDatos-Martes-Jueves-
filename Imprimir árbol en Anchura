@@ -1,3 +1,13 @@
+// Imprimir el árbol en orden de anchura
+    printf("Imprimir el árbol en orden de anchura:\n");
+    int h = height(root);
+    for (int i = 1; i <= h; i++) {
+        printf("Nivel %d: ", i);
+        printLevel(root, i);
+        printf("\n");
+    }
+
+
 // Función para imprimir el árbol en orden de anchura
 void printLevel(Node* root, int level) {
     if (root == NULL)
