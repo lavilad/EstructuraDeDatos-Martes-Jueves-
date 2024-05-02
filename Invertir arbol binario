@@ -1,74 +1,74 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// DEFINICIÓN DE LA ESTRUCTURA DE UN NODO DE ÁRBOL
-typedef struct Nodo {
-    int clave;
-    struct Nodo *izquierda;
-    struct Nodo *derecha;
-} Nodo;
+// DEFINITION OF A TREE NODE STRUCTURE
+typedef struct Node {
+    int key;
+    struct Node *left;
+    struct Node *right;
+} Node;
 
-// FUNCIÓN PARA CREAR UN NUEVO NODO
-Nodo *nuevoNodo(int clave) {
-    Nodo *nodo = (Nodo *)malloc(sizeof(Nodo));
-    nodo->clave = clave;
-    nodo->izquierda = nodo->derecha = NULL;
-    return nodo;
+// FUNCTION TO CREATE A NEW NODE
+Node *newNode(int key) {
+    Node *node = (Node *)malloc(sizeof(Node));
+    node->key = key;
+    node->left = node->right = NULL;
+    return node;
 }
 
-// FUNCIÓN PARA INSERTAR UN NODO EN EL ÁRBOL
-Nodo *insertar(Nodo *raiz, int clave) {
-    if (raiz == NULL) {
-        return nuevoNodo(clave);
+// FUNCTION TO INSERT A NODE INTO THE TREE
+Node *insert(Node *root, int key) {
+    if (root == NULL) {
+        return newNode(key);
     }
-    if (clave < raiz->clave) {
-        raiz->izquierda = insertar(raiz->izquierda, clave);
-    } else if (clave > raiz->clave) {
-        raiz->derecha = insertar(raiz->derecha, clave);
+    if (key < root->key) {
+        root->left = insert(root->left, key);
+    } else if (key > root->key) {
+        root->right = insert(root->right, key);
     }
-    return raiz;
+    return root;
 }
 
-// FUNCIÓN PARA INVERTIR UN ÁRBOL DE BÚSQUEDA BINARIA
-Nodo *invertirArbol(Nodo *raiz) {
-    if (raiz == NULL) {
+// FUNCTION TO INVERT A BINARY SEARCH TREE
+Node *invertTree(Node *root) {
+    if (root == NULL) {
         return NULL;
     }
-    // Intercambiar los hijos izquierdo y derecho
-    Nodo *temp = raiz->izquierda;
-    raiz->izquierda = raiz->derecha;
-    raiz->derecha = temp;
-    // Invertir los subárboles izquierdo y derecho
-    invertirArbol(raiz->izquierda);
-    invertirArbol(raiz->derecha);
-    return raiz;
+    // Swap left and right children
+    Node *temp = root->left;
+    root->left = root->right;
+    root->right = temp;
+    // Recursively invert left and right subtrees
+    invertTree(root->left);
+    invertTree(root->right);
+    return root;
 }
 
-// FUNCIÓN PARA RECORRIDO INORDEN
-void inorden(Nodo *raiz) {
-    if (raiz != NULL) {
-        inorden(raiz->izquierda);
-        printf("%d ", raiz->clave);
-        inorden(raiz->derecha);
+// FUNCTION FOR INORDER TRAVERSAL
+void inorder(Node *root) {
+    if (root != NULL) {
+        inorder(root->left);
+        printf("%d ", root->key);
+        inorder(root->right);
     }
 }
 
 int main(void) {
-    Nodo *raiz = NULL;
-    int claves[] = {80, 70, 20, 60, 30, 50, 2, 100};
-    for (int i = 0; i < sizeof(claves) / sizeof(claves[0]); i++) {
-        raiz = insertar(raiz, claves[i]);
+    Node *root = NULL;
+    int keys[] = {80, 70, 20, 60, 30, 50, 2, 100};
+    for (int i = 0; i < sizeof(keys) / sizeof(keys[0]); i++) {
+        root = insert(root, keys[i]);
     }
 
-    printf("Recorrido ordenado del árbol: ");
-    inorden(raiz);
+    printf("Inorder traversal of the tree: ");
+    inorder(root);
     printf("\n");
 
-    // Invertir el árbol
-    raiz = invertirArbol(raiz);
+    // Invert the tree
+    root = invertTree(root);
 
-    printf("Recorrido invertido del árbol: ");
-    inorden(raiz);
+    printf("Inverted inorder traversal of the tree: ");
+    inorder(root);
     printf("\n");
 
     return 0;
