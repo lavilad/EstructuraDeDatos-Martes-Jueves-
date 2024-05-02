@@ -5,3 +5,8 @@ void calMedia(Node* root, int* sum, int* count) {
     calMedia(root->left, sum, count);
     calMedia(root->right, sum, count);
 }
+int media_sum = 0;
+int media_count = 0;
+calMedia(root, &media_sum, &media_count);
+double media = (media_count == 0) ? 0 : (double)media_sum / media_count;
+printf("\nLa Media es: %.2f\n", media);
