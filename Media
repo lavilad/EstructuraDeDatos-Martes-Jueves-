@@ -1,0 +1,7 @@
+void calMedia(Node* root, int* sum, int* count) {
+    if (root == NULL) return;
+    *sum += root->key;
+    (*count)++;
+    calMedia(root->left, sum, count);
+    calMedia(root->right, sum, count);
+}
