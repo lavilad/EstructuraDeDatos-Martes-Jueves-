@@ -1,0 +1,16 @@
+//Funcion que te permite contar los nodos en un rando dado
+int contarNodosEnRAngo(Node* root, int low, int high) {
+    if (root == NULL) 
+        return 0;
+
+    if (root->key < low)
+        return contarNodosEnRAngo(root->right, low, high);
+    else if (root->key > high)
+        return contarNodosEnRAngo(root->left, low, high);
+
+    return 1 + contarNodosEnRAngo(root->left, low, high) + contarNodosEnRAngo(root->right, low, high);
+}
+
+//Dentro del main:
+int count = contarNodosEnRAngo(root, 30, 70);
+  printf("Número de nodos en el rango [30, 70]: %d\n", count);
