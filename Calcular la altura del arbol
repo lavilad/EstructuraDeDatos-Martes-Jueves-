@@ -1,0 +1,13 @@
+// FUNCION CALCULAR LA ALTURA DEL ARBOL
+int treeHeight(Node *root) {
+    if (root == NULL) {
+        return 0; // Height of an empty tree is 0
+    } else {
+        // CALCULAR LA ALTURA DE LOS SUBARBOLES IZQUIERDO Y DERECHO
+        int leftHeight = treeHeight(root->left);
+        int rightHeight = treeHeight(root->right);
+
+        // La altura del árbol es la altura máxima entre los subárboles izquierdo y derecho
+        return 1 + (leftHeight > rightHeight ? leftHeight : rightHeight);
+    }
+}
